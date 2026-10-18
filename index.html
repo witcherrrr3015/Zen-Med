@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Study Day">
+<title>Study Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1F6;--card:#FFFFFF;--ink:#0E1B2C;--mute:#5B6B80;--line:#D9DFE8;--acc:#2F5BFF;--on:#FFFFFF;--ok:#1F9D6B;--bad:#D64545;--hl:#E6ECFF;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1220;--card:#131C2E;--ink:#E8EDF6;--mute:#93A1B8;--line:#24304A;--acc:#5B7FFF;--on:#FFFFFF;--ok:#2FB584;--bad:#FF6B6B;--hl:#1C2A52;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1220;--card:#131C2E;--ink:#E8EDF6;--mute:#93A1B8;--line:#24304A;--acc:#5B7FFF;--on:#FFFFFF;--ok:#2FB584;--bad:#FF6B6B;--hl:#1C2A52;color-scheme:dark}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 Manrope,system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:480px;margin:0 auto;padding:16px 16px 96px}
+h1{font-size:24px;font-weight:800;margin:4px 0 14px;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:800;margin:0 0 4px}
+.now{background:var(--acc);color:var(--on);border-radius:18px;padding:18px}
+.now small{display:block;font-size:13px;opacity:.9}
+.now b{display:block;font-size:30px;font-weight:800;line-height:1.1;margin:6px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
+.row{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row.cur{background:var(--hl);border-radius:10px;margin:0 -8px;padding-left:8px;padding-right:8px;border-top-color:transparent}
+.nowline{display:flex;align-items:center;gap:8px;color:var(--acc);font-size:12px;font-weight:800;margin:2px 0}
+.nowline::before,.nowline::after{content:"";flex:1;height:2px;background:var(--acc);border-radius:2px}
+.t{width:70px;flex:none;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.g{flex:1;min-width:0}
+.g span{display:block;font-size:13px;color:var(--mute)}
+.anchor .g{color:var(--mute)}
+.chk{width:36px;height:36px;flex:none;border-radius:50%;border:2px solid var(--line);background:transparent;color:var(--on);font:800 16px/1 Manrope,system-ui;padding:0}
+.chk.on{background:var(--ok);border-color:var(--ok)}
+.nums label{display:flex;justify-content:space-between;align-items:center;padding:7px 0}
+input,textarea,select{font:600 16px Manrope,system-ui,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.nums input{width:88px;text-align:right}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.form label{display:block;font-size:13px;color:var(--mute)}
+.form input,.form select{width:100%;margin-top:4px;text-align:left}
+.w2{grid-column:1/-1}
+.btn{width:100%;margin-top:12px;padding:12px;border:0;border-radius:12px;background:var(--acc);color:var(--on);font:800 15px Manrope,system-ui,sans-serif}
+.btn.ghost{background:transparent;color:var(--acc);border:2px solid var(--acc)}
+.dr{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:6px;padding:9px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.dr.hd{border-top:0;color:var(--mute);font-size:13px;font-weight:600}
+.pc{text-align:right}
+.pc.ok{color:var(--ok);font-weight:800}
+.tt{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.del{border:0;background:transparent;color:var(--mute);font:600 13px Manrope,system-ui,sans-serif;padding:4px 0}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.chips b{display:block;font-size:20px;font-weight:800}
+.chips span{font-size:12px;color:var(--mute)}
+.chips>div{border-left:3px solid transparent;padding-left:8px}
+.chips>.up{border-left-color:var(--ok)}.chips>.dn{border-left-color:var(--bad)}
+.chips .up b,.chips .up i{color:var(--ok)}.chips .dn b,.chips .dn i{color:var(--bad)}
+.chips i{font-style:normal;font-weight:800}
+.segc{display:flex;gap:6px;margin:0 0 4px}
+.segc button{flex:1;padding:8px 0;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--mute);font:600 14px Manrope,system-ui,sans-serif}
+.segc button.on{background:var(--acc);border-color:var(--acc);color:var(--on)}
+svg{width:100%;height:auto;display:block;margin-top:6px}
+.gl{stroke:var(--line);stroke-width:1}
+.sg{stroke-width:3;stroke-linecap:round}
+.sg.up{stroke:var(--ok)}.sg.dn{stroke:var(--bad)}.sg.eq{stroke:var(--mute)}
+.dt{fill:var(--card);stroke:var(--acc);stroke-width:2.5}
+.tx{fill:var(--mute);font:600 10px Manrope,system-ui,sans-serif}
+.gl{stroke-dasharray:3 4}
+.ar{fill:var(--acc);opacity:.1}
+.dt.up{stroke:var(--ok)}.dt.dn{stroke:var(--bad)}.dt.eq{stroke:var(--mute)}
+.dt.on{stroke-width:4}
+.hit{fill:transparent;cursor:pointer}
+.tx.v{fill:var(--ink);font-weight:800}
+.gap{display:flex;align-items:center;gap:14px;border-radius:14px;padding:14px;margin-top:14px;color:#FFFFFF}
+.gap.g{background:#1F9D6B}.gap.y{background:#F2C14E;color:#0E1B2C}.gap.r{background:#D64545}
+.gap.none{background:var(--card);border:1px solid var(--line);color:var(--mute)}
+.gap .big{font-size:40px;font-weight:800;line-height:1;min-width:48px;text-align:center}
+.gap b{display:block;font-size:15px}
+.gap span{display:block;font-size:13px;opacity:.92}
+.note{font-size:13px;color:var(--mute);margin:4px 0 0}
+textarea{width:100%;height:140px;margin-top:10px;font-size:12px}
+.plan p{margin:2px 0 0;color:var(--mute)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;max-width:120px;margin:0 auto;border:0;background:transparent;color:var(--mute);font:600 14px Manrope,system-ui,sans-serif;padding:10px 0;border-radius:10px}
+nav button.on{color:var(--acc);background:var(--bg)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main id="v"></main>
+<nav>
+<button data-t="today">Today</button>
+<button data-t="progress">Progress</button>
+<button data-t="tests">Tests</button>
+<button data-t="plan">Plan</button>
+</nav>
+<script>
+const SESS=[["08:00","08:50","Anki","100 cards, about 30-35 min"],["09:00","09:50","MCQ block 1","About 50 questions, 1 min each"],["10:00","10:50","Review block 1","Wrong and guessed questions first"],["11:00","11:50","MCQ block 2","About 50 questions, 1 min each"],["12:00","12:50","Review block 2","Wrong and guessed questions first"],["14:00","14:50","Video lectures 1 of 3","1.25x, weak topics first"],["15:00","15:50","Video lectures 2 of 3","1.25x, weak topics first"],["16:00","16:50","Video lectures 3 of 3","1.25x, weak topics first"],["17:30","18:20","MCQ block 3","About 50 questions, 1 min each"],["18:30","19:20","Review block 3","Wrong and guessed questions first"]];
+const ANCH=[["06:30","07:15","Workout or walk"],["13:00","14:00","Lunch and rest"],["17:00","17:30","Tea or short walk"],["19:20","23:00","Evening free"]];
+const ITEMS=SESS.map((x,i)=>({s:x[0],e:x[1],n:x[2],d:x[3],i})).concat(ANCH.map(x=>({s:x[0],e:x[1],n:x[2]}))).sort((a,b)=>a.s<b.s?-1:a.s>b.s?1:0);
+const CREDIT=[{anki:100},{mcq:50},{},{mcq:50},{},{video:1},{video:1},{video:1},{mcq:50},{}];
+const G={anki:100,mcq:150,video:3};
+const PLAN=[["MCQ volume","150-170 questions is the daily default. Treat 200 as an occasional bump, for example by swapping one video session for a fourth MCQ block."],["Review","Go through every wrong or guessed question and skim the ones you got right. End each review session with a one-line note on the pattern behind your errors."],["Anki","If daily reviews creep past 100, cut new cards. Make cards only from high-yield mistakes, about 5-10 a day."],["Videos","Pick lectures from the topics you missed in MCQs, not in sequence. At 1.25x, 3 hr of lectures fits in three sessions."],["Lighter day","Take one lighter day a week, for example Sunday: Anki, one MCQ block with review, and a catch-up on the week’s errors."],["Early months","Lean on videos and on building up weak areas."],["Last 2-3 months","Cut videos down and add full-length timed mocks."]];
+const $=s=>document.querySelector(s);
+const m=t=>+t.slice(0,2)*60+ +t.slice(3);
+const fmt=t=>{let h=+t.slice(0,2);const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+t.slice(3)+" "+ap};
+const key=(d=new Date())=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lab=(k,o)=>new Date(k+"T00:00:00").toLocaleDateString("en-IN",o);
+const LS={get(k,def){try{return JSON.parse(localStorage.getItem(k)||"null")||def}catch(e){return def}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let data=LS.get("studyday",{}),tests=LS.get("studytests",[]),col=null,tab="today",pend=null,fb="",DL=null,flt="all",selId=null;const timers={};
+const get=k=>data[k]||{done:[],anki:0,mcq:0,video:0};
+const day=k=>data[k]||(data[k]={done:[],anki:0,mcq:0,video:0});
+const pc=(v,g)=>Math.round((v||0)/g*100);
+function save(k){LS.set("studyday",data);if(!col)return;clearTimeout(timers[k]);timers[k]=setTimeout(async()=>{try{const v=data[k];await col.doc("d-"+k).set({date:k,done:v.done,anki:v.anki||0,mcq:v.mcq||0,video:v.video||0})}catch(e){}},700)}
+function saveTests(){LS.set("studytests",tests);if(!col)return;clearTimeout(timers.t);timers.t=setTimeout(async()=>{try{await col.doc("tests").set({list:tests})}catch(e){}},500)}
+const csv=rows=>rows.map(r=>r.map(v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")).join("\n");
+async function exportCsv(name,rows){
+  const text=csv(rows);
+  if(!DL){
+    if(!window.claude){try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/csv"}));a.download=name;document.body.appendChild(a);a.click();a.remove()}catch(e){}}
+    fb=text;render();return}
+  try{await DL.save({filename:name,data:text})}catch(e){if(!e||e.code!=="declined"){fb=text;render()}}
+}
+const fbBox=()=>fb?`<p class="note">${window.claude?"Saving isn’t available here. Copy this and paste it into a notes app or spreadsheet.":"If the file didn’t download, copy this text into a notes app or spreadsheet."}</p><textarea readonly>${esc(fb)}</textarea>`:"";
+
+function vToday(){
+  const d=get(key());
+  const n=new Date(),mm=n.getHours()*60+n.getMinutes();
+  const curIdx=ITEMS.findIndex(x=>m(x.s)<=mm&&mm<m(x.e));
+  const nxtIdx=curIdx<0?ITEMS.findIndex(x=>m(x.s)>mm):-1;
+  const nowLine=`<div class="nowline">Now, ${fmt(String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0"))}</div>`;
+  const rows=ITEMS.map((x,ix)=>{const a=x.i==null,on=!a&&d.done.includes(x.i);
+    return `${ix===nxtIdx?nowLine:""}<div class="row${a?" anchor":""}${ix===curIdx?" cur":""}"><div class="t">${fmt(x.s)}</div><div class="g">${x.n}${x.d?`<span>${x.d}</span>`:""}</div>${a?"":`<button class="chk${on?" on":""}" data-i="${x.i}" aria-pressed="${on}" aria-label="Mark ${x.n} done">${on?"✓":""}</button>`}</div>`}).join("")+(curIdx<0&&nxtIdx<0?nowLine:"");
+  return `<h1>${n.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}</h1>
+  <div class="now" id="now"></div>
+  <div class="card nums"><h2>Today’s numbers</h2>
+  <label>Anki cards, goal 100<input type="number" inputmode="numeric" min="0" data-f="anki" value="${d.anki||""}" placeholder="0"></label>
+  <label>MCQs solved, goal 150<input type="number" inputmode="numeric" min="0" data-f="mcq" value="${d.mcq||""}" placeholder="0"></label>
+  <label>Video lectures, goal 3 hr<input type="number" inputmode="decimal" min="0" step="0.25" data-f="video" value="${d.video||""}" placeholder="0"></label></div>
+  <div class="card"><h2>${d.done.length} of 10 sessions done</h2>${rows}</div>`;
+}
+function vProg(){
+  const first=Object.keys(data).sort()[0]||key(),x=new Date(),out=[];
+  for(let i=0;i<800;i++){
+    const k=key(x),d=get(k),p=[pc(d.anki,G.anki),pc(d.mcq,G.mcq),pc(d.video,G.video)];
+    out.push(`<div class="dr"><div>${i===0?"Today":lab(k,{weekday:"short",day:"numeric",month:"short"})}</div>${p.map(v=>`<div class="pc${v>=100?" ok":""}">${v}%</div>`).join("")}</div>`);
+    if(k<=first)break;x.setDate(x.getDate()-1);
+  }
+  return `<h1>Progress</h1><div class="card"><h2>Share of the daily goal done</h2>
+  <p class="note">Goals: Anki 100 cards, MCQs 150, lectures 3 hr. Green means the goal is met.</p>
+  <div class="dr hd"><div>Day</div><div class="pc">Anki</div><div class="pc">MCQs</div><div class="pc">Lectures</div></div>${out.join("")}</div>
+  <div class="card"><h2>Export</h2><p class="note">${col?"Every day you log is kept in your Claude account and on this phone.":"Your log is saved in this browser on this device only."} Export it as a spreadsheet file whenever you want a copy.</p>
+  <button class="btn ghost" data-a="expd">Export daily log (CSV)</button>${tab==="progress"?fbBox():""}</div>`;
+}
+function vTests(){
+  const asc=[...tests].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.id-b.id);
+  const inF=z=>flt==="all"||(z.exam||"")===flt;
+  const prevOf={},last={};
+  asc.forEach(z=>{const e=z.exam||"";prevOf[z.id]=last[e]||null;last[e]=z});
+  const acc=z=>z&&z.c!=null&&(z.c+(z.w||0))>0?Math.round(z.c/(z.c+(z.w||0))*100):null;
+  const dv=(cur,pv,upGood)=>{if(cur==null||pv==null||cur===pv)return{c:"",t:""};const df=Math.round((cur-pv)*100)/100,good=upGood?df>0:df<0;return{c:good?"up":"dn",t:(df>0?"▲ ":"▼ ")+Math.abs(df)}};
+  const chip=(l,cur,pv,upGood,show)=>{const d=dv(cur,pv,upGood);return `<div class="${d.c}"><b>${show!==undefined?show:(cur==null?"-":cur)}</b><span>${l}${d.t?` <i>${d.t}</i>`:""}</span></div>`};
+  const list=[...asc].filter(inF).reverse().map(z=>{
+    const p=prevOf[z.id],a=acc(z),meta=[z.exam,z.platform].filter(Boolean).join(", ");
+    return `<div class="card"><div class="tt"><div><h2>${esc(z.name)}</h2><p class="note">${lab(z.date,{day:"numeric",month:"short",year:"numeric"})}</p>${meta?`<p class="note">${esc(meta)}</p>`:""}</div><button class="del" data-a="del" data-id="${z.id}">${pend===z.id?"Tap again to delete":"Delete"}</button></div>
+    <div class="chips">${chip("Correct",z.c,p&&p.c,true)}${chip("Wrong",z.w,p&&p.w,false)}${chip("Left",z.l,p&&p.l,false)}${chip("Marks",z.marks,p&&p.marks,true)}${chip("Percentile",z.pct,p&&p.pct,true)}${chip("Accuracy",a,p?acc(p):null,true,a==null?"-":a+"%")}</div></div>`}).join("");
+  const pts=asc.filter(z=>inF(z)&&z.pct!=null);
+  const sel=pts.find(z=>z.id===selId)||pts[pts.length-1];
+  let svg=`<p class="note">Add a test with a percentile to see the graph.</p>`,stats="",det="";
+  if(pts.length){
+    const W=320,H=210,L=34,R=16,T=26,B=30,vals=pts.map(z=>z.pct),mn=Math.min(...vals),mx=Math.max(...vals);
+    const pad=Math.max(2,(mx-mn)*.15),raw=(mx-mn+2*pad)/4,step=[1,2,5,10,20,25].find(k=>k>=raw)||25;
+    let lo=Math.max(0,Math.floor((mn-pad)/step)*step),hi=Math.min(100,Math.ceil((mx+pad)/step)*step);
+    if(hi<=lo)hi=lo+step;
+    const X=i=>pts.length===1?(L+W-R)/2:L+i*(W-L-R)/(pts.length-1),Y=q=>T+(hi-q)*(H-T-B)/(hi-lo);
+    const ticks=[];for(let g=lo;g<=hi;g+=step)ticks.push(g);
+    const grid=ticks.map(g=>`<line class="gl" x1="${L}" y1="${Y(g)}" x2="${W-R}" y2="${Y(g)}"/><text class="tx" x="${L-6}" y="${Y(g)+3.5}" text-anchor="end">${g}</text>`).join("");
+    const area=pts.length>1?`<path class="ar" d="M${X(0)},${H-B} L${pts.map((z,i)=>X(i)+","+Y(z.pct)).join(" L")} L${X(pts.length-1)},${H-B} Z"/>`:"";
+    const segs=pts.slice(1).map((z,i)=>{const q=pts[i];return `<line class="sg ${z.pct>q.pct?"up":z.pct<q.pct?"dn":"eq"}" x1="${X(i)}" y1="${Y(q.pct)}" x2="${X(i+1)}" y2="${Y(z.pct)}"/>`}).join("");
+    const dots=pts.map((z,i)=>{const q=pts[i-1],c=!q?"":z.pct>q.pct?"up":z.pct<q.pct?"dn":"eq",on=z===sel,sh=pts.length<=8||i===0||i===pts.length-1||z.pct===mx;
+      return `<circle class="dt ${c}${on?" on":""}" cx="${X(i)}" cy="${Y(z.pct)}" r="${on?6:4.5}"/>${sh?`<text class="tx v" x="${X(i)}" y="${Y(z.pct)-10}" text-anchor="middle">${z.pct}</text>`:""}`}).join("");
+    const hits=pts.map((z,i)=>`<circle class="hit" data-a="pt" data-id="${z.id}" cx="${X(i)}" cy="${Y(z.pct)}" r="14"/>`).join("");
+    const every=Math.ceil(pts.length/6);
+    const xl=pts.map((z,i)=>(pts.length-1-i)%every===0?`<text class="tx" x="${X(i)}" y="${H-10}" text-anchor="middle">${lab(z.date,{day:"numeric",month:"short"})}</text>`:"").join("");
+    svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Percentile for each Grand Test">${grid}${area}${segs}${dots}${xl}${hits}</svg>`;
+    const lastP=pts[pts.length-1],prevP=pts[pts.length-2],meta=[sel.exam,sel.platform].filter(Boolean).join(", ");
+    stats=`<div class="chips">${chip("Latest",lastP.pct,prevP?prevP.pct:null,true)}${chip("Best",mx,null,true)}${chip("Tests",pts.length,null,true)}</div>`;
+    det=`<p class="note"><b>${esc(sel.name)}</b>, ${lab(sel.date,{day:"numeric",month:"short",year:"numeric"})}${meta?", "+esc(meta):""}. Percentile ${sel.pct}${sel.marks!=null?", marks "+sel.marks:""}.</p><p class="note">Green line: rose from the previous test. Red: dropped. Tap a point for details.</p>`;
+  }
+  const lastT=asc.filter(inF).pop();
+  let ban=`<div class="gap none">No Grand Test logged yet${flt==="all"?"":" for "+flt}.</div>`;
+  if(lastT){
+    const n=Math.max(0,Math.round((new Date(key()+"T00:00:00")-new Date(lastT.date+"T00:00:00"))/864e5)),c=n<=10?"g":n<=15?"y":"r";
+    ban=`<div class="gap ${c}"><div class="big">${n}</div><div><b>${n===1?"day":"days"} since your last Grand Test</b><span>${c==="g"?"On schedule":c==="y"?"Due soon":"Overdue"}. Last: ${esc(lastT.name)}, ${lab(lastT.date,{day:"numeric",month:"short"})}. Green up to 10 days, yellow 11-15, red after 15.</span></div></div>`;
+  }
+  const lz=tests[tests.length-1]||{},lastEx=lz.exam||"NEET",lastPl=lz.platform||"";
+  const seg=[["all","All"],["NEET","NEET"],["INI","INI"]].map(x=>`<button data-a="flt" data-v="${x[0]}" class="${flt===x[0]?"on":""}">${x[1]}</button>`).join("");
+  return `<h1>Grand Tests</h1><div class="segc">${seg}</div>
+  ${ban}
+  <div class="card"><h2>Percentile by Grand Test</h2>${stats}${svg}${det}</div>
+  <div class="card"><h2>Add a test</h2><div class="form">
+  <label class="w2">Test name<input id="tn" type="text" placeholder="Grand Test ${tests.length+1}"></label>
+  <label>Platform<input id="tpl" type="text" list="pl" value="${esc(lastPl)}" placeholder="Marrow"></label>
+  <label>Exam<select id="te"><option${lastEx==="NEET"?" selected":""}>NEET</option><option${lastEx==="INI"?" selected":""}>INI</option></select></label>
+  <label>Date<input id="td" type="date" value="${key()}"></label>
+  <label>Marks<input id="tm" type="number" inputmode="decimal" step="any" placeholder="0"></label>
+  <label>Correct<input id="tc" type="number" inputmode="numeric" min="0" placeholder="0"></label>
+  <label>Wrong<input id="tw" type="number" inputmode="numeric" min="0" placeholder="0"></label>
+  <label>Left<input id="tl" type="number" inputmode="numeric" min="0" placeholder="0"></label>
+  <label>Percentile<input id="tp" type="number" inputmode="decimal" step="any" placeholder="0"></label></div>
+  <datalist id="pl"><option value="Marrow"><option value="PrepLadder"><option value="DAMS"><option value="Cerebellum"><option value="NBE mock"></datalist>
+  <button class="btn" data-a="addt">Save test</button></div>
+  ${list||`<div class="card"><p class="note">No tests to show yet. Add a Grand Test above.</p></div>`}
+  ${tests.length?`<div class="card"><h2>Export</h2><button class="btn ghost" data-a="expt">Export tests (CSV)</button>${tab==="tests"?fbBox():""}</div>`:""}`;
+}
+function vPlan(){
+  return `<h1>Plan</h1><div class="card plan">${PLAN.map(p=>`<div class="row"><div class="g"><h2>${p[0]}</h2><p>${p[1]}</p></div></div>`).join("")}</div>`;
+}
+function paintNow(){
+  const el=$("#now");if(!el)return;
+  const n=new Date(),mm=n.getHours()*60+n.getMinutes(),d=get(key());
+  const c=ITEMS.find(x=>m(x.s)<=mm&&mm<m(x.e));let tag,nm,de="",r="";
+  if(c){tag="Now";nm=c.n;de=c.d||"";r=(m(c.e)-mm)+" min left"}
+  else{const x=ITEMS.find(y=>m(y.s)>mm);
+    if(x){tag="Up next at "+fmt(x.s);nm=x.n;de=x.d||"";r="in "+(m(x.s)-mm)+" min"}
+    else{tag="Day complete";nm=d.done.length+" of 10 sessions"}}
+  el.innerHTML=`<small>${tag}</small><b>${nm}</b><small>${de}${de&&r?", ":""}${r}</small>`;
+}
+function render(){
+  $("#v").innerHTML=tab==="today"?vToday():tab==="progress"?vProg():tab==="tests"?vTests():vPlan();
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+  paintNow();
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button,[data-a]");if(!b)return;
+  if(b.dataset.t){tab=b.dataset.t;fb="";pend=null;render();scrollTo(0,0);return}
+  if(b.dataset.i!=null){const k=key(),d=day(k),i=+b.dataset.i,j=d.done.indexOf(i);
+    const cr=CREDIT[i]||{},sg=j<0?1:-1;
+    if(j<0)d.done.push(i);else d.done.splice(j,1);
+    for(const f in cr)d[f]=Math.max(0,Math.round(((d[f]||0)+sg*cr[f])*100)/100);
+    save(k);render();return}
+  const a=b.dataset.a;
+  if(a==="addt"){
+    const val=id=>$("#"+id).value,num=id=>{const s=val(id),x=parseFloat(s);return s===""||isNaN(x)?null:x};
+    const ex=val("te");tests.push({id:Date.now(),date:val("td")||key(),name:val("tn").trim()||"Grand Test "+(tests.length+1),platform:val("tpl").trim(),exam:ex,c:num("tc"),w:num("tw"),l:num("tl"),marks:num("tm"),pct:num("tp")});
+    if(flt!=="all"&&flt!==ex)flt="all";
+    saveTests();render();
+  }else if(a==="del"){
+    const id=+b.dataset.id;
+    if(pend===id){tests=tests.filter(z=>z.id!==id);pend=null;saveTests()}else pend=id;
+    render();
+  }else if(a==="pt"){selId=+b.dataset.id;render();
+  }else if(a==="flt"){flt=b.dataset.v;selId=null;render();
+  }else if(a==="expd"){
+    exportCsv("study-daily-log.csv",[["Date","Sessions done","Anki cards","MCQs solved","Lectures (hr)","Anki %","MCQ %","Lecture %"]].concat(Object.keys(data).sort().map(k=>{const d=data[k];return[k,d.done.length,d.anki||0,d.mcq||0,d.video||0,pc(d.anki,G.anki),pc(d.mcq,G.mcq),pc(d.video,G.video)]})));
+  }else if(a==="expt"){
+    exportCsv("grand-tests.csv",[["Date","Test","Platform","Exam","Correct","Wrong","Left","Marks","Percentile","Accuracy %"]].concat([...tests].sort((p,q)=>p.date<q.date?-1:1).map(z=>[z.date,z.name,z.platform||"",z.exam||"",z.c,z.w,z.l,z.marks,z.pct,(z.c!=null&&(z.c+(z.w||0))>0)?Math.round(z.c/(z.c+(z.w||0))*100):""])));
+  }
+});
+document.addEventListener("change",e=>{
+  const f=e.target.dataset&&e.target.dataset.f;if(!f)return;
+  const k=key(),d=day(k),v=parseFloat(e.target.value);d[f]=Math.max(0,f==="video"?(v||0):(Math.round(v)||0));
+  save(k);render();
+});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&tab==="today")render()});
+setInterval(()=>{if(tab==="today"&&!(document.activeElement&&document.activeElement.tagName==="INPUT"))render();else paintNow()},30000);
+render();
+
+(async()=>{try{if(window.claude)DL=await claude.use("downloads")}catch(e){}})();
+(async()=>{
+  try{
+    if(!window.claude)return;
+    const [u,d]=await Promise.all([claude.use("user"),claude.use("db")]);
+    if(!u||!d)return;
+    const id=await u.id();if(!id)return;
+    col=d.collection("data/users/"+id);
+    const snap=await col.get(),have=new Set();let gotT=false;
+    snap.docs.forEach(s=>{const v=s.data();if(!v)return;
+      if(s.id==="tests"){if(Array.isArray(v.list)){tests=v.list.map(z=>({...z}));gotT=true}}
+      else if(v.date){have.add(v.date);data[v.date]={done:Array.isArray(v.done)?[...v.done]:[],anki:+v.anki||0,mcq:+v.mcq||0,video:+v.video||0}}});
+    LS.set("studyday",data);LS.set("studytests",tests);
+    if(tab!=="tests")render();
+    Object.keys(data).forEach(k=>{if(!have.has(k))save(k)});
+    if(!gotT&&tests.length)saveTests();
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
